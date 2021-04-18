@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:optionchain/connection.dart';
 import 'package:optionchain/optionModel.dart';
 
@@ -15,7 +14,7 @@ class OptionBloc {
       dataListStreamController.sink;
 
   Stream<List<Data>> get dataListStream => dataListStreamController.stream;
-  // ----------------------------End---Data List-------------------------->>
+  // ------------------------------End----------------------------->>
 
   getCookies() {
     print("Getting cookies");
@@ -24,9 +23,6 @@ class OptionBloc {
   getData(String symbole) {
     _connection.getDetails(symbole).then((response) {
       List<dynamic> dynamicList = response['filtered']["data"] as List<dynamic>;
-      // dynamicList.forEach((element) {
-      //   print(element);
-      // });
       dynamicList.map((i) => filterdData.add(Data.fromJson(i))).toList();
       dataListStreamSink.add(filterdData);
     });

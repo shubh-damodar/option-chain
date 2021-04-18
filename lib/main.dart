@@ -31,9 +31,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void navigationWith(String data) {
     Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => OptionChainDetails(mainTitle: "$data")));
+      context,
+      MaterialPageRoute(
+        builder: (context) => OptionChainDetails(mainTitle: "$data"),
+      ),
+    );
   }
 
   @override
@@ -62,7 +64,13 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             raisedButton("NIFTY"),
+            SizedBox(
+              height: 20,
+            ),
             raisedButton("BANKNIFTY"),
+            SizedBox(
+              height: 20,
+            ),
             raisedButton("FINNIFTY"),
           ],
         ),

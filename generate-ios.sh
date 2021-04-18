@@ -25,5 +25,3 @@ rm -Rf Payload
 #env setups
 #flutter run -t lib/dev_main.dart
 #flutter build -t lib/dev_main.dart
-
-
