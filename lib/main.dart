@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_stetho/flutter_stetho.dart';
 import 'package:optionchain/Details.dart';
 import 'package:optionchain/OptionBloc.dart';
+import 'package:optionchain/equitiesListPage.dart';
+import 'package:optionchain/sharedPre.dart';
 
-void main() {
+Future<void> main() async {
   Stetho.initialize();
+  SharedPrefManager.getSharedPref();
   runApp(MyApp());
 }
 
@@ -12,6 +15,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Option Chain',
       theme: ThemeData.dark(),
       home: MyHomePage(title: 'Option chain'),
@@ -71,9 +75,23 @@ class _MyHomePageState extends State<MyHomePage> {
             SizedBox(
               height: 20,
             ),
-            raisedButton("FINNIFTY"),
+            // raisedButton("FINNIFTY"),
+            //
+            ElevatedButton(
+              child: Text("Sell all equities"),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => EquitiesList()),
+                );
+              },
+            ),
           ],
         ),
+      ),
+      floatingActionButton: IconButton(
+        icon: Icon(Icons.ac_unit),
+        onPressed: () => _optionBloc.setEquitiesList(),
       ),
     );
   }

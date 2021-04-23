@@ -13,31 +13,52 @@ class Connection {
     );
   }
 
+  var dio = Dio();
+  var cookieJar = CookieJar();
+
+  Future<void> setCookies() async {
+    dio.interceptors..add(LogInterceptor())..add(CookieManager(cookieJar));
+    await dio.get(
+      'https://www.nseindia.com/get-quotes/derivatives',
+    );
+  }
+
   Map<String, dynamic> setHeaders() {
     headersData['Access-Control-Allow-Origin'] = "*";
     headersData['Access-Control-Allow-Credentials'] = "true";
     headersData['Access-Control-Allow-Headers'] =
         "Origin,Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,locale";
     headersData['Access-Control-Allow-Methods'] = "POST, OPTIONS";
-    // if ("Add token here" != null) headersData['token'] = "";
     return headersData;
   }
 
   Future<Map<String, dynamic>> getDetails(String symbol) async {
-    // Map<String, String> headersData = Map<String, String>();
-
-    var dio = Dio();
-    var cookieJar = CookieJar();
     dio.interceptors..add(LogInterceptor())..add(CookieManager(cookieJar));
-
     await dio.get(
-      'https://www.nseindia.com/get-quotes/derivatives?symbol=$symbol',
-      // options: getOptions(),
+      'https://www.nseindia.com/get-quotes/derivatives',
     );
-
     var cleanResponse = await dio.get(
         'https://www.nseindia.com/api/option-chain-indices?symbol=$symbol');
+    return cleanResponse.data;
+  }
 
+  Future<Map<String, dynamic>> getEquitie(String symbol) async {
+    dio.interceptors..add(LogInterceptor())..add(CookieManager(cookieJar));
+    await dio.get(
+      'https://www.nseindia.com/get-quotes/derivatives',
+    );
+    var cleanResponse = await dio.get(
+        'https://www.nseindia.com/api/option-chain-equities?symbol=$symbol');
+    return cleanResponse.data;
+  }
+
+  Future<List<dynamic>> getEquitiesList() async {
+    dio.interceptors..add(LogInterceptor())..add(CookieManager(cookieJar));
+    await dio.get(
+      'https://www.nseindia.com/get-quotes/derivatives',
+    );
+    var cleanResponse =
+        await dio.get('https://www.nseindia.com/api/master-quote');
     return cleanResponse.data;
   }
 }

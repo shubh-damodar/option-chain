@@ -12,15 +12,18 @@ dependencies:
   flutter:
     sdk: flutter
 
-  cupertino_icons: ^1.0.0
-  http: ^0.13.1
+  cupertino_icons: 1.0.0
+  http: 0.13.1
   flutter_stetho:
     git:
       url: git://github.com/jasonlewicki/flutter_stetho.git
       ref: master
-  dio: ^4.0.0
+  dio: 4.0.0
   cookie_jar: 3.0.1
-  dio_cookie_manager: ^2.0.0
+  dio_cookie_manager: 2.0.0
+  shared_preferences: ^2.0.5
+
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
