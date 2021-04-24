@@ -23,49 +23,54 @@ class _EquitiesListState extends State<EquitiesList> {
     return Scaffold(
       appBar: AppBar(),
       body: SingleChildScrollView(
-        child: StreamBuilder(
-          stream: _optionBloc.equitiListStream,
-          builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
-            return snapshot.data == null
-                ? Center(
-                    child: Text("Loading..."),
-                  )
-                : Container(
-                    child: ListView.builder(
-                      addAutomaticKeepAlives: true,
-                      shrinkWrap: true,
-                      padding: EdgeInsets.only(bottom: 5),
-                      itemCount: snapshot.data.length,
-                      itemBuilder: (BuildContext context, int i) {
-                        return InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => OptionChainDetails(
-                                    mainTitle: "${snapshot.data[i]}"),
+        child: Column(
+          children: [
+            StreamBuilder(
+              stream: _optionBloc.equitiListStream,
+              builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
+                return snapshot.data == null
+                    ? Center(
+                        child: Text("Loading..."),
+                      )
+                    : Container(
+                        height: MediaQuery.of(context).size.width,
+                        child: ListView.builder(
+                          addAutomaticKeepAlives: true,
+                          shrinkWrap: true,
+                          padding: EdgeInsets.only(bottom: 5),
+                          itemCount: snapshot.data.length,
+                          itemBuilder: (BuildContext context, int i) {
+                            return InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => OptionChainDetails(
+                                        mainTitle: "${snapshot.data[i]}"),
+                                  ),
+                                );
+                              },
+                              child: Card(
+                                elevation: 3,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(snapshot.data[i]),
+                                      Icon(Icons.arrow_right),
+                                    ],
+                                  ),
+                                ),
                               ),
                             );
                           },
-                          child: Card(
-                            elevation: 3,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(snapshot.data[i]),
-                                  Icon(Icons.arrow_right),
-                                ],
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  );
-          },
+                        ),
+                      );
+              },
+            ),
+          ],
         ),
       ),
     );
