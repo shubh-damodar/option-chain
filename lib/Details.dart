@@ -124,7 +124,6 @@ class _OptionChainDetailsState extends State<OptionChainDetails> {
                           child: Text("Loading..."),
                         )
                       : Container(
-                          // color: Colors.black12,
                           child: ListView.builder(
                             addAutomaticKeepAlives: true,
                             shrinkWrap: true,

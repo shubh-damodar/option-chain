@@ -12,10 +12,26 @@ class EquitiesList extends StatefulWidget {
 class _EquitiesListState extends State<EquitiesList> {
   OptionBloc _optionBloc = OptionBloc();
 
+  TextEditingController _searchList = TextEditingController();
+
   @override
   void initState() {
     _optionBloc.setEquitiesList();
     super.initState();
+  }
+
+  List data = List();
+
+  List newSearchList = List();
+
+  setData(List responseList) {
+    Future.delayed(Duration.zero, () {
+      _optionBloc.equitiListStreamSink.add(null);
+      data = responseList;
+      newSearchList = responseList;
+      setState(() {});
+    });
+    return Container();
   }
 
   @override
@@ -24,52 +40,64 @@ class _EquitiesListState extends State<EquitiesList> {
       appBar: AppBar(),
       body: SingleChildScrollView(
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             StreamBuilder(
               stream: _optionBloc.equitiListStream,
               builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
-                return snapshot.data == null
-                    ? Center(
-                        child: Text("Loading..."),
-                      )
-                    : Container(
-                        height: MediaQuery.of(context).size.width,
-                        child: ListView.builder(
-                          addAutomaticKeepAlives: true,
-                          shrinkWrap: true,
-                          padding: EdgeInsets.only(bottom: 5),
-                          itemCount: snapshot.data.length,
-                          itemBuilder: (BuildContext context, int i) {
-                            return InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => OptionChainDetails(
-                                        mainTitle: "${snapshot.data[i]}"),
-                                  ),
-                                );
-                              },
-                              child: Card(
-                                elevation: 3,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(snapshot.data[i]),
-                                      Icon(Icons.arrow_right),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      );
+                return snapshot.data != null
+                    ? setData(snapshot.data)
+                    : Container();
               },
             ),
+            TextField(
+              controller: _searchList,
+              onChanged: (searchValue) {
+                if (searchValue.length > 0) {
+                  newSearchList = List();
+                  data.forEach((element) {
+                    if (element
+                        .toString()
+                        .toLowerCase()
+                        .contains(searchValue.toLowerCase())) {
+                      print(element);
+                      newSearchList.add(element);
+                      setState(() {});
+                    }
+                  });
+                }
+              },
+            ),
+            ListView.builder(
+                itemCount: newSearchList.length,
+                shrinkWrap: true,
+                itemBuilder: (BuildContext context, int i) {
+                  return InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => OptionChainDetails(
+                            mainTitle: "${newSearchList[i]}",
+                          ),
+                        ),
+                      );
+                    },
+                    child: Card(
+                      elevation: 3,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(newSearchList[i]),
+                            Icon(Icons.arrow_right),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                }),
           ],
         ),
       ),

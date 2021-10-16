@@ -1,8 +1,6 @@
 import 'dart:async';
-import 'dart:convert';
 import 'package:optionchain/connection.dart';
 import 'package:optionchain/optionModel.dart';
-import 'package:optionchain/sharedPre.dart';
 
 class OptionBloc {
   Connection _connection = Connection();
